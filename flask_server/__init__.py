@@ -18,7 +18,9 @@ def create_app():
 
     # Blueprints/Routes
     from flask_server.routes import user
+    from flask_server.routes import auth
 
     app.register_blueprint(user.user)
+    app.register_blueprint(auth.auth)
 
     return app
