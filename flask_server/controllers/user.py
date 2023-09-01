@@ -1,13 +1,15 @@
-from flask_server.extensions import db
+from flask_server.extensions import db, ph
 from flask_server.models import User
 from sqlalchemy.exc import IntegrityError
 
 
 class UserController:
     @staticmethod
-    def register(username, password, email):
+    def create(username, password, email):
+        hashed_password = ph.hash(password)
+
         try:
-            user = User(username=username, password=password, email=email)
+            user = User(username=username, password=hashed_password, email=email)
             db.session.add(user)
             db.session.commit()
 
@@ -35,7 +37,7 @@ class UserController:
     def get_all():
         users = db.session.execute(db.select(User)).scalars()
         user_list = []
-        print(users)
+
         for user in users:
             username = user.username
             password = user.password
