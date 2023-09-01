@@ -69,7 +69,12 @@ To sync the database in another system, pull the migrations folder from version 
 
 - [Result Methods (all(), scalars(), etc)](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Result)
 
-[Flask-Migrate 4.0.4](https://flask-migrate.readthedocs.io/en/latest/#)
+[Flask-Migrate 4.0.4](https://flask-migrate.readthedocs.io/en/latest/#)  
+[argon2-cffi 23.1.0](https://argon2-cffi.readthedocs.io/en/stable/index.html)
+
+### Dev Dependencies
+
+Black
 
 ## Todo
 
