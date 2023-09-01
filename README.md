@@ -65,7 +65,10 @@ To sync the database in another system, pull the migrations folder from version 
 [Python 3.11.5](https://docs.python.org/release/3.11.5/whatsnew/changelog.html#python-3-11-5)  
 [Flask 2.3.3](https://flask.palletsprojects.com/en/2.3.x/)  
 [python-dotenv 1.0.0](https://github.com/theskumar/python-dotenv#readme)  
-[Flask-SQLAlchemy 3.0.5](https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/)  
+[Flask-SQLAlchemy 3.0.5](https://flask-sqlalchemy.palletsprojects.com/en/3.0.x/)
+
+- [Result Methods (all(), scalars(), etc)](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Result)
+
 [Flask-Migrate 4.0.4](https://flask-migrate.readthedocs.io/en/latest/#)
 
 ## Todo
