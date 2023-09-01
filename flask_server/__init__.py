@@ -5,7 +5,7 @@ from flask_server.extensions import db, migrate
 
 def create_app():
     app = Flask(__name__)
-    
+
     # Configs
     app.config.from_prefixed_env()
 
@@ -16,5 +16,9 @@ def create_app():
     # Models
     from flask_server.models import User
 
-    return app
+    # Blueprints/Routes
+    from flask_server.routes import user
 
+    app.register_blueprint(user.user)
+
+    return app
