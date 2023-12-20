@@ -1,0 +1,15 @@
+services:
+  db:
+    container_name: flaskserver_db
+    image: mysql
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: FlaskDb
+    ports:
+      - 7555:3306
+    volumes:
+      - flaskdb:/var/lib/mysql
+
+volumes:
+  flaskdb:
