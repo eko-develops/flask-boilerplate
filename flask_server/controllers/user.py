@@ -1,58 +1,40 @@
 from flask_server.extensions import db, ph
 from flask_server.models import User
-from sqlalchemy.exc import IntegrityError
 
 
 class UserController:
     @staticmethod
-    def create(username, password, email):
-        hashed_password = ph.hash(password)
-
+    def get_user(username):
         try:
-            user = User(username=username, password=hashed_password, email=email)
-            db.session.add(user)
-            db.session.commit()
+            user = db.session.execute(
+                db.select(User).filter_by(username=username)
+            ).scalar_one()
 
-            return {"status": True, "user": {"username": username, "email": email}}
-        except IntegrityError as ie:
-            db.session.rollback()
-            print(ie)
-            # Handle error logging
-            return {
-                "status": False,
-                "status_code": 400,
-                "message": "Username or email already exists.",
-            }
+            return user
         except Exception as e:
             print(e)
-            db.session.rollback()
-            # Handle error logging
-            return {
-                "status": False,
-                "status_code": 500,
-                "message": "An error occured during registration.",
-            }
 
     @staticmethod
-    def get_all():
-        users = db.session.execute(db.select(User)).scalars()
-        user_list = []
-
-        for user in users:
-            username = user.username
-            password = user.password
-            email = user.email
-
-            user_list.append([username, password, email])
-
-        return user_list
-
-    @staticmethod
-    def delete_all():
+    def update_user(username, updates):
         try:
-            db.session.query(User).delete()
+            user = db.session.execute(
+                db.select(User).filter_by(username=username)
+            ).scalar_one()
+
+            for key, values in updates.items():
+                setattr(user, key, values)
+
             db.session.commit()
+
             return True
+
         except Exception as e:
-            db.session.rollback()
-            return str(e)
+            print(e)
+
+    @staticmethod
+    def rehash_user_password(user, password):
+        try:
+            user.password = ph.hash(password)
+            db.session.commit()
+        except Exception as e:
+            print(e)
