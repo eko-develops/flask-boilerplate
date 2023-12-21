@@ -5,15 +5,15 @@ from flask_server.controllers.user import UserController
 user = Blueprint("user", __name__, url_prefix="/user")
 
 
-@user.route("/all", methods=["GET"])
-def all_users():
-    users = UserController.get_all()
+# TODO: Clean up routes
+@user.route("/update", methods=["POST"])
+def update_users():
+    body = request.get_json()
 
-    return jsonify(users=users)
+    username = body["username"]
+    updates = body["updates"]
 
+    if UserController.update_user(username, updates):
+        return jsonify(message="updated")
 
-@user.route("/delete-all", methods=["DELETE"])
-def delete_all_users():
-    UserController.delete_all()
-
-    return jsonify(message="deleted successfully")
+    return jsonify(message="not updated")
