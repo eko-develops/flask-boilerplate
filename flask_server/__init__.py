@@ -1,6 +1,6 @@
 from flask import Flask
 
-from flask_server.extensions import db, migrate
+from flask_server.extensions import db, migrate, jwt
 
 
 def create_app():
@@ -12,6 +12,7 @@ def create_app():
     # Extensions
     db.init_app(app)
     migrate.init_app(app, db)
+    jwt.init_app(app)
 
     # Models
     from flask_server.models import User
