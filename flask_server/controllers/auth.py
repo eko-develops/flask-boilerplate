@@ -1,6 +1,6 @@
 from argon2.exceptions import VerifyMismatchError, VerificationError, InvalidHashError
 
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, NoResultFound
 
 from flask_server.extensions import ph, db
 from flask_server.controllers.user import UserController
@@ -26,29 +26,36 @@ class AuthController:
                 "status": True,
                 "user": {"username": user.username, "email": user.email},
             }
+        except NoResultFound as nrf:
+            print(f"NoResultFound: {nrf}")
+            return {
+                "status": False,
+                "status_code": 400,
+                "message": "No user found.",
+            }
         except InvalidHashError as ihe:
-            print(ihe)
+            print(f"InvalidHashError: {ihe}")
             return {
                 "status": False,
                 "status_code": 400,
                 "message": "Hash so clearly not valid for login.",
             }
         except VerifyMismatchError as vme:
-            print(vme)
+            print(f"VerifyMismatchError: {vme}")
             return {
                 "status": False,
                 "status_code": 400,
                 "message": "Hash not valid for password.",
             }
         except VerificationError as ve:
-            print(ve)
+            print(f"VerificationError: {ve}")
             return {
                 "status": False,
                 "status_code": 400,
                 "message": "Login verification failed.",
             }
         except Exception as e:
-            print(e)
+            print(f"LoginException: {e}")
             return {
                 "status": False,
                 "status_code": 500,
