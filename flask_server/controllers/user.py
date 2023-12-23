@@ -30,6 +30,7 @@ class UserController:
 
         except Exception as e:
             print(e)
+            return False
 
     @staticmethod
     def rehash_user_password(user, password):
