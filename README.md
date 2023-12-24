@@ -36,6 +36,8 @@ This boilerplate only uses a single environment variable in `.env` to get starte
 
 If any changes are made to the database such as new models, change in column names or constraints, etc, a migration will need to be performed to reflect the changes. This Flask boilerplate uses `Flask-Migrate` to create and run migrations.
 
+When performing migrations, ensure that the models are imported before calling `migrate.init_app(app, db)`.
+
 ### How To Perform A Migration (First Migration)
 
 If a migration has never been performed on the database before, we will need to create a migration repository. **This directory should be added to version control**. This directory will be created in the root of the project. Use the following command to create the migrations folder:
@@ -44,13 +46,13 @@ If a migration has never been performed on the database before, we will need to 
 
 You can then generate the migration using the following command. This does not run the migration, but just creates the migration file. Leave a descriptive message of what has been changed for the migration.
 
-`flask --app flask_server migrate -m "Initial migration"`
+`flask --app flask_server db migrate -m "Initial migration"`
 
 _Important Note: The migration script needs to be reviewed and edited, as Alembic is not always able to detect every change you make to your models. In particular, Alembic is currently unable to detect table name changes, column name changes, or anonymously named constraints. A detailed summary of limitations can be found in the Alembic autogenerate documentation. Once finalized, the migration script also needs to be added to version control._
 
 Once the migration script has been reviewed and edited if needed, you can run the final command to apply the migration:
 
-`flask --app flask_server upgrade`
+`flask --app flask_server db upgrade`
 
 ### Repeat Migrations
 
