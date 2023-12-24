@@ -9,13 +9,14 @@ def create_app():
     # Configs
     app.config.from_prefixed_env()
 
+    # Models
+    from flask_server.models import User
+    from flask_server.models import Credential
+
     # Extensions
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
-
-    # Models
-    from flask_server.models import User
 
     # Blueprints/Routes
     from flask_server.routes import user
