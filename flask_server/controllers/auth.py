@@ -4,7 +4,8 @@ from sqlalchemy.exc import IntegrityError, NoResultFound
 
 from flask_server.extensions import ph, db
 from flask_server.controllers.user import UserController
-from flask_server.models.user import User
+from flask_server.models import User
+from flask_server.models import Credential
 
 
 class AuthController:
@@ -87,3 +88,15 @@ class AuthController:
                 "status_code": 500,
                 "message": "An error occured during registration.",
             }
+
+    @staticmethod
+    def check_api_key(api_key):
+        try:
+            db.session.execute(
+                db.Select(Credential).filter_by(api_key=api_key)
+            ).scalar_one()
+
+            return True
+        except Exception as e:
+            print(e)
+            return False
