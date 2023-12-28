@@ -1,14 +1,14 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required
 
 from flask_server.controllers.user import UserController
+from flask_server.decorators import jwt_or_api_key_required
 
 user = Blueprint("user", __name__, url_prefix="/user")
 
 
 # TODO: Clean up routes
 @user.route("/update", methods=["POST"])
-@jwt_required()
+@jwt_or_api_key_required()
 def update_users():
     body = request.get_json()
 
