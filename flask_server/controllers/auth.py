@@ -100,3 +100,8 @@ class AuthController:
         except Exception as e:
             print(e)
             return False
+
+    @staticmethod
+    def verify(id, username, unique_id):
+        # Here we will make a call to the Wordpress endpoint to verify the user
+        pass

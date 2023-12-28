@@ -11,6 +11,7 @@ from flask_jwt_extended import (
     unset_jwt_cookies,
 )
 
+from flask_server.decorators import jwt_or_api_key_required
 from flask_server.controllers.auth import AuthController
 
 auth = Blueprint("auth", __name__, url_prefix="/auth")
@@ -87,6 +88,36 @@ def register():
     email = body["email"]
 
     result = AuthController.register(username, password, email)
+
+    if result["status"] == False:
+        return (
+            jsonify(
+                user=None,
+                message=result["message"],
+            ),
+            result["status_code"],
+        )
+
+    return (
+        jsonify(user=result["user"], message="New user registered successfully."),
+        201,
+    )
+
+
+@jwt_or_api_key_required()
+@auth.route("/verify", methods=["POST"])
+def verify():
+    body = request.get_json()
+
+    # Ensure all fields are present
+    if not all(key in body for key in ("username", "id", "uniqueId")):
+        return jsonify(message="Missing required fields"), 400
+
+    id = body["id"]
+    username = body["username"]
+    unique_id = body["uniqueId"]
+
+    result = AuthController.verify(id, username, unique_id)
 
     if result["status"] == False:
         return (
